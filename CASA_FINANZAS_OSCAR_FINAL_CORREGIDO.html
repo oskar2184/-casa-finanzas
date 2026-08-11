@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#111827">
+<title>Casa Finanzas · Oscar</title>
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f5f6f8;color:#172033;margin:0}
+main{max-width:900px;margin:auto;padding:20px}.top{display:flex;justify-content:space-between;align-items:center}
+h1{margin:0;font-size:28px}.muted{color:#667085}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
+.card{background:white;border-radius:18px;padding:18px;border:1px solid #e5e7eb}.label{color:#667085;font-size:13px}.value{font-size:28px;font-weight:800;margin-top:6px}
+.red{color:#dc2626}.green{color:#16a34a}.section{background:white;border-radius:18px;padding:18px;margin-top:12px;border:1px solid #e5e7eb}
+.row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #edf0f3}.row:last-child{border:0}
+button{border:0;border-radius:12px;padding:12px 16px;background:#111827;color:white;font-weight:700}
+@media(max-width:700px){.cards{grid-template-columns:1fr}.value{font-size:25px}}
+</style>
+</head>
+<body>
+<main>
+<div class="top"><div><h1>🏠 Casa Finanzas</h1><div class="muted">Septiembre 2026 · Oscar</div></div><button onclick="addExpense()">＋ Gasto</button></div>
+
+<div class="cards">
+<div class="card"><div class="label">💰 Ingresos casa</div><div class="value">2.535 €</div></div>
+<div class="card"><div class="label">🔴 Gastos previstos casa</div><div class="value red" id="homeExpenses">2.432 €</div></div>
+<div class="card"><div class="label">🟢 Capacidad de ahorro</div><div class="value green" id="capacity">103 €</div></div>
+</div>
+
+<div class="section">
+<h2>🏠 Cuenta Casa</h2>
+<div class="row"><span>Nómina</span><b>2.350 €</b></div>
+<div class="row"><span>Pensión Lia</span><b>185 €</b></div>
+<div class="row"><span>Hipoteca vivienda</span><b>850 €</b></div>
+<div class="row"><span>Luz</span><b>60 €</b></div>
+<div class="row"><span>Agua</span><b>30 €</b></div>
+<div class="row"><span>Gas</span><b>35 €</b></div>
+<div class="row"><span>Internet</span><b>45 €</b></div>
+<div class="row"><span>Coche</span><b>300 €</b></div>
+<div class="row"><span>Cuota temporal B05</span><b>164 €</b></div>
+<div class="row"><span>Lia común</span><b>60 €</b></div>
+<div class="row"><span>Lia ahorros</span><b>100 €</b></div>
+<div class="row"><span>Plan pensión</span><b>52 €</b></div>
+<div class="row"><span>Bestreta</span><b>75 €</b></div>
+<div class="row"><span>Comida</span><b>400 €</b></div>
+<div class="row"><span>Restaurantes</span><b>150 €</b></div>
+<div class="row"><span>Compras</span><b>100 €</b></div>
+<div class="row"><span>ChatGPT</span><b>8 €</b></div>
+<div class="row"><span>iCloud</span><b>3 €</b></div>
+</div>
+
+<div class="section">
+<h2>🏢 Piso Cornellà · cuenta aparte</h2>
+<div class="row"><span>Alquiler</span><b>850 €</b></div>
+<div class="row"><span>Hipoteca</span><b>630 €</b></div>
+<div class="row"><span>Comunidad</span><b>20 €</b></div>
+<div class="row"><span>Ascensor</span><b>25 €</b></div>
+<div class="row"><span>IBI</span><b>42 € · julio a diciembre</b></div>
+<div class="row"><span>Cocina</span><b>31 € · 9 meses</b></div>
+</div>
+
+<div class="section">
+<h2>📅 Cambios programados</h2>
+<div class="row"><span>Octubre 2026</span><b>+175 € brutos</b></div>
+<div class="row"><span>Enero 2027</span><b>+4,5 %</b></div>
+<div class="row"><span>Marzo</span><b>Paga extra ≈ 2.200 €</b></div>
+<div class="row"><span>Junio</span><b>Paga extra ≈ 2.000 €</b></div>
+<div class="row"><span>Diciembre</span><b>Paga extra ≈ 2.000 €</b></div>
+<div class="row"><span>Julio y agosto</span><b>Ahorro realista: 10 %</b></div>
+<div class="row"><span>Junio y diciembre</span><b>Ahorro realista: 75 %</b></div>
+</div>
+
+<script>
+function addExpense(){
+ const amount=prompt("Importe del gasto (€)");
+ if(amount && !isNaN(amount)) alert("Gasto de "+amount+" € registrado. En la siguiente versión quedará guardado automáticamente.");
+}
+</script>
+</main>
+</body>
+</html>
