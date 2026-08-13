@@ -88,12 +88,7 @@ h2{margin:0 0 12px}.gold-title,.blue-title{font-size:15px;letter-spacing:.4px}.g
 <div class="field"><label>Nómina mensual</label><input id="salary" type="number"></div>
 <div class="field"><label>Pensión Lia</label><input id="lia" type="number"></div>
 <div class="field"><label>Alquiler Cornellà</label><input id="rent" type="number"></div>
-<h3>🏠 Gastos Casa</h3>
-<div class="hint">
-  Puedes modificar cualquier gasto. Los gastos variables mantienen su función de presupuesto y los demás son gastos fijos.
-</div>
-<div id="homeEdit"></div>
-<button class="light" onclick="addRow('home')">＋ Añadir gasto fijo</button>
+<h3>🏠 Gastos Casa</h3><div class="hint">Solo se pueden modificar Luz, Agua, Gas, Comida, Restaurantes y Compras. El resto son gastos fijos.</div><div id="homeEdit"></div>
 <h3>🏢 Gastos Cornellà</h3><div id="aptEdit"></div><button class="light" onclick="addRow('cornella')">＋ Añadir gasto</button>
 <div class="section" style="margin-top:14px;padding:12px"><b>📅 Pagos anuales automáticos</b><div class="hint">Seguros, Apple TV y fútbol se añaden automáticamente en el mes que corresponde. No hace falta introducirlos cada año.</div></div>
 <button class="blue save" onclick="saveAll()">💾 GUARDAR CAMBIOS</button>
@@ -301,8 +296,6 @@ function render(){
       <span>▣</span><b>${esc(monthName(month).replace(/^./,c=>c.toUpperCase()))} ${month.slice(0,4)}</b>
       <button class="month-btn" onclick="changeMonth(1)">›</button>
     </div>
-    
-${paymentAlert()}
 
     <section class="hero-cards">
       <div class="hero-card income-card">
@@ -418,182 +411,29 @@ function openEdit(){
 }
 function closeEdit(){document.getElementById("editModal").classList.remove("open")}
 function drawRows(){
-
-  // GASTOS CASA
-  document.getElementById("homeEdit").innerHTML = data.home.map((x,i)=>{
-
-    const variable = isVariableCategory(x[0]);
-
-    return `
-      <div class="edit" style="grid-template-columns:1fr 110px 42px;margin:9px 0">
-
-        <div>
-          <input
-            class="hn"
-            data-i="${i}"
-            value="${esc(x[0])}"
-            ${variable ? "readonly" : ""}
-            style="${variable ? "opacity:.65" : ""}"
-          >
-          ${variable
-            ? `<small style="display:block;color:#8d9aac;font-size:10px;margin-top:3px">
-                Categoría variable
-               </small>`
-            : `<small style="display:block;color:#d9a441;font-size:10px;margin-top:3px">
-                Gasto fijo editable
-               </small>`
-          }
-        </div>
-
-        <input
-          class="ha"
-          data-i="${i}"
-          type="number"
-          step="0.01"
-          value="${x[1]}"
-        >
-
-        <button
-          onclick="removeRow('home',${i})"
-          style="border:1px solid #6b3940;background:#35181c;color:#ff9b9b;border-radius:7px"
-          title="Eliminar gasto"
-        >✕</button>
-
-      </div>
-    `;
-  }).join("");
-
-  // GASTOS CORNELLÀ
-  document.getElementById("aptEdit").innerHTML =
-    data.cornella.map((x,i)=>`
-      <div class="edit" style="grid-template-columns:1fr 110px 42px;margin:9px 0">
-
-        <input
-          class="an"
-          data-i="${i}"
-          value="${esc(x[0])}"
-        >
-
-        <input
-          class="aa"
-          data-i="${i}"
-          type="number"
-          step="0.01"
-          value="${x[1]}"
-        >
-
-        <button
-          onclick="removeRow('cornella',${i})"
-          style="border:1px solid #6b3940;background:#35181c;color:#ff9b9b;border-radius:7px"
-          title="Eliminar gasto"
-        >✕</button>
-
-      </div>
-    `).join("");
+ document.getElementById("homeEdit").innerHTML=data.home.filter(x=>isVariableCategory(x[0])).map((x)=>{
+  const i=data.home.indexOf(x);
+  return `<div class="edit"><input class="hn" data-i="${i}" value="${esc(x[0])}" readonly><input class="ha" data-i="${i}" type="number" value="${x[1]}"></div>`;
+}).join("");
+ document.getElementById("aptEdit").innerHTML=data.cornella.map((x,i)=>`<div class="edit"><input class="an" data-i="${i}" value="${esc(x[0])}"><input class="aa" data-i="${i}" type="number" value="${x[1]}"><button onclick="removeRow('cornella',${i})">✕</button></div>`).join("");
 }
-
-
-function addRow(which){
-
-  if(which==="home"){
-    data.home.push(["Nuevo gasto fijo",0]);
-    drawRows();
-    return;
-  }
-
-  if(which==="cornella"){
-    data.cornella.push(["Nuevo gasto",0]);
-    drawRows();
-  }
-}
-
-
-function removeRow(which,i){
-
-  if(which==="home"){
-
-    const item=data.home[i];
-
-    if(isVariableCategory(item[0])){
-      alert("Las categorías variables no se pueden eliminar porque forman parte del presupuesto.");
-      return;
-    }
-
-    if(!confirm(`¿Eliminar "${item[0]}" de los gastos fijos?`)){
-      return;
-    }
-
-    data.home.splice(i,1);
-    drawRows();
-    return;
-  }
-
-  if(which==="cornella"){
-
-    if(!confirm(`¿Eliminar "${data.cornella[i][0]}"?`)){
-      return;
-    }
-
-    data.cornella.splice(i,1);
-    drawRows();
-  }
-}
-
-
+function addRow(which){if(which==="home")return;data[which].push(["Nuevo gasto",0]);drawRows()}
+function removeRow(which,i){data[which].splice(i,1);drawRows()}
 function saveAll(){
-
-  data.salary =
-    Number(document.getElementById("salary").value) || 0;
-
-  data.lia =
-    Number(document.getElementById("lia").value) || 0;
-
-  data.rent =
-    Number(document.getElementById("rent").value) || 0;
-
-
-  // GASTOS CASA
-  const homeNames =
-    document.querySelectorAll(".hn");
-
-  const homeAmounts =
-    document.querySelectorAll(".ha");
-
-  homeNames.forEach((e,i)=>{
-
-    const idx=Number(e.dataset.i);
-
-    if(!data.home[idx]) return;
-
-    // Las categorías variables mantienen su nombre
-    if(!isVariableCategory(data.home[idx][0])){
-      data.home[idx][0]=
-        e.value.trim() || "Nuevo gasto fijo";
-    }
-
-    data.home[idx][1]=
-      Number(homeAmounts[i].value) || 0;
-  });
-
-
-  // CORNELLÀ
-  const aptNames =
-    document.querySelectorAll(".an");
-
-  const aptAmounts =
-    document.querySelectorAll(".aa");
-
-  data.cornella=[...aptNames].map((e,i)=>[
-    e.value.trim() || "Nuevo gasto",
-    Number(aptAmounts[i].value) || 0
-  ]);
-
-
-  localStorage.setItem(KEY,JSON.stringify(data));
-
-  closeEdit();
-  render();
+ data.salary=Number(document.getElementById("salary").value)||0;
+ data.lia=Number(document.getElementById("lia").value)||0;
+ data.rent=Number(document.getElementById("rent").value)||0;
+ [...document.querySelectorAll(".hn")].forEach((e,i)=>{
+  const idx=Number(e.dataset.i);
+  if(data.home[idx] && isVariableCategory(data.home[idx][0])){
+    data.home[idx][1]=Number(document.querySelectorAll(".ha")[i].value)||0;
+  }
+});
+ data.cornella=[...document.querySelectorAll(".an")].map((e,i)=>[e.value.trim()||"Nuevo gasto",Number(document.querySelectorAll(".aa")[i].value)||0]);
+ localStorage.setItem(KEY,JSON.stringify(data));
+ closeEdit();render();
 }
+function addExpense(){
   document.getElementById("expenseModal").classList.add("open");
   document.getElementById("expenseAmount").value="";
   document.getElementById("expenseCategory").value="Comida";
