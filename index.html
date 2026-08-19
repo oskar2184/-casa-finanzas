@@ -1195,7 +1195,64 @@ function deleteExpense(id){
 initializeAccountBalance();
 applyAppearance();
 render();
-</script>
+function handleShortcutExpense(){
+  const params=new URLSearchParams(window.location.search);
+
+  if(params.get("shortcut")!=="expense") return;
+
+  const amount=Number(params.get("amount"));
+  if(!amount || amount<=0) return;
+
+  const note=(params.get("note")||"").trim();
+  const category=params.get("category")||"Otros";
+  const account=params.get("account")||"home";
+  const date=params.get("date")||new Date().toISOString().slice(0,10);
+
+  const uniqueKey=[
+    "casa-finanzas-shortcut",
+    date,
+    amount,
+    note,
+    category,
+    account
+  ].join("|");
+
+  const lastShortcut=localStorage.getItem("casaFinanzasLastShortcut");
+
+  if(lastShortcut===uniqueKey) return;
+
+  data.movements=data.movements||[];
+
+  const item={
+    id:Date.now(),
+    date:date,
+    amount:amount,
+    category:category,
+    account:account,
+    note:note
+  };
+
+  data.movements.push(item);
+
+  if(account==="home"){
+    data.accountBalance=Number(data.accountBalance||0)-amount;
+  }
+
+  data.accountBalanceInitialized=true;
+
+  localStorage.setItem(KEY,JSON.stringify(data));
+  localStorage.setItem("casaFinanzasLastShortcut",uniqueKey);
+
+  window.history.replaceState(
+    {},
+    document.title,
+    window.location.pathname
+  );
+
+  render();
+}
+
+handleShortcutExpense();</script>
 <nav class="bottom-nav" aria-label="Navegación principal">
   <button class="nav-btn active" data-view="summary" onclick="setView('summary')" title="Resumen" aria-label="Resumen">
     <span class="minimal-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10.5V20h13v-9.5"/><path d="M9.5 20v-5h5v5"/></svg></span>
