@@ -1200,7 +1200,9 @@ function handleShortcutExpense(){
 
   if(params.get("shortcut")!=="expense") return;
 
-  const amount=Number(params.get("amount"));
+  const amount=Number(
+  String(params.get("amount") || "").replace(",", ".")
+);
   if(!amount || amount<=0) return;
 
   const note=(params.get("note")||"").trim();
