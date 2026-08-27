@@ -1010,7 +1010,7 @@ function openEdit(){
 }
 function closeEdit(){document.getElementById("editModal").classList.remove("open")}
 function editIncomeQuick(id){
-  const item=(data.incomeEntries||[]).find(x=>String(x.id)===String(id));
+  const item=(data.incomeEntries||[]).find(x=>x.id===id||x.name==="Horas extras");
   if(!item) return;
   const amount=Number(prompt(`Importe previsto para "${item.name}" (€):`,String(item.amount||0)));
   if(!Number.isFinite(amount) || amount<0){alert("Introduce un importe válido.");return;}
