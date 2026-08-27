@@ -55,7 +55,7 @@ h2{margin:0 0 12px}.gold-title,.blue-title{font-size:15px;letter-spacing:.4px}.g
 .quick-title{margin-top:16px;padding-top:12px;border-top:1px solid #334456}.quick-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.quick-grid>div{border:1px solid #34495c;border-radius:11px;padding:11px 14px;background:#0b1a28}.quick-grid>div:nth-child(1){border-color:#2d694d}.quick-grid>div:nth-child(2){border-color:#7b5b24}.quick-grid>div:nth-child(3){border-color:#613d78}.quick-grid b{display:block;font:22px Georgia,serif;color:#fff;margin-top:5px}.quick-grid small{color:#aab7c8;font-size:11px}
 .note-panel{margin-top:14px;border:1px solid #34495c;border-radius:12px;padding:12px 16px;color:#d4dce7;background:#081724;display:flex;align-items:center;gap:12px;font-size:13px}.note-panel:first-letter{color:#5daaff}.note-panel strong{margin-left:auto;color:#d5a33c;font:34px Georgia,serif}.income-panel{margin-top:14px}.income-rows>div{display:flex;justify-content:space-between;padding:10px 2px;border-bottom:1px solid #ffffff0c}.income-total{color:#e6b34e;font-weight:800}
 .lower-panels{margin-top:14px}.mini-del{background:transparent;border:1px solid #6b3940;color:#ef7777;border-radius:7px;padding:3px 7px}
-.mini-edit{background:transparent;border:1px solid #536b82;color:#9fc6e8;border-radius:7px;padding:3px 7px;margin-left:3px}
+.mini-edit{.mini-edit{background:transparent;border:1px solid #536b82;color:#9fc6e8;border-radius:7px;padding:3px 7px;margin-left:3px}background:transparent;border:1px solid #536b82;color:#9fc6e8;border-radius:7px;padding:3px 7px;margin-left:3px}
 .daily-limit-card{width:100%;text-align:center;padding:18px 12px}
 .daily-spend-inline{margin:12px 0 0;padding:12px 16px;border:1px solid var(--line);border-radius:14px;background:linear-gradient(145deg,#0b1b2a,#081522);display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .daily-spend-label{font-weight:800;color:#77df69}
@@ -892,7 +892,7 @@ function render(){
         <div><span>👮 Nómina</span><b>${eur(salaryForMonth())}</b></div>
         <div><span>👤 Ingreso Lia</span><b>${eur(data.lia)}</b></div>
         ${Number(data.extras[String(monthNum())]||0)>0?`<div><span>🎁 Paga extra</span><b>${eur(Number(data.extras[String(monthNum())]||0))}</b></div>`:""}
-        ${(data.incomeEntries||[]).map(x=>`<div><span>＋ ${esc(x.name)}</span><span><b>${eur(x.amount)}</b> <button class="mini-edit" onclick="editIncomeQuick(${JSON.stringify(x.id)})">✎</button> <button class="mini-del" onclick="deleteIncomeQuick(${JSON.stringify(x.id)})">✕</button></span></div>`).join("")}
+        ${(data.incomeEntries||[]).map(x=>`<div><span>＋ ${esc(x.name)}</span><span><b>${eur(x.amount)}</b> <button type="button" class="mini-edit" onclick="editIncomeQuick(${JSON.stringify(x.id)})">✎</button> <button class="mini-del" onclick="deleteIncomeQuick(${JSON.stringify(x.id)})">✕</button></span></div>`).join("")}
         <div class="income-total"><span>Total ingresos previstos</span><b>${eur(income())}</b></div>
       </div>
       <div class="section-actions">
